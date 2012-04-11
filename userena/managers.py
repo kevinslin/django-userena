@@ -28,7 +28,7 @@ class UserenaManager(UserManager):
     """ Extra functionality for the Userena model. """
 
     def create_user(self, username, email, password, active=False,
-                    send_email=True):
+                    send_email=True, first_name = '', last_name = ''):
         """
         A simple wrapper that creates a new :class:`User`.
 
@@ -42,7 +42,7 @@ class UserenaManager(UserManager):
             String containing the password for the new user.
 
         :param active:
-            Boolean that defines if the user requires activation by clicking 
+            Boolean that defines if the user requires activation by clicking
             on a link in an e-mail. Defauts to ``True``.
 
         :param send_email:
@@ -57,6 +57,8 @@ class UserenaManager(UserManager):
 
         new_user = User.objects.create_user(username, email, password)
         new_user.is_active = active
+        if first_name: new_user.first_name = first_name
+        if last_name: new_user.last_name = last_name
         new_user.save()
 
         userena_profile = self.create_userena_profile(new_user)
@@ -79,7 +81,7 @@ class UserenaManager(UserManager):
 
         if send_email:
             userena_profile.send_activation_email()
- 
+
         return new_user
 
     def create_userena_profile(self, user):

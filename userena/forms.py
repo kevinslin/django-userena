@@ -23,6 +23,9 @@ class SignupForm(forms.Form):
     be accepted.
 
     """
+    first_name = forms.CharField(label=_("First name:"))
+    last_name = forms.CharField(label=_("Last name:"))
+
     username = forms.RegexField(regex=USERNAME_RE,
                                 max_length=30,
                                 widget=forms.TextInput(attrs=attrs_dict),
@@ -78,12 +81,15 @@ class SignupForm(forms.Form):
         username, email, password = (self.cleaned_data['username'],
                                      self.cleaned_data['email'],
                                      self.cleaned_data['password1'])
+        first_name, last_name = (self.cleaned_data['first_name'], self.cleaned_data['last_name'])
 
         new_user = UserenaSignup.objects.create_user(username,
-                                                     email, 
+                                                     email,
                                                      password,
                                                      not userena_settings.USERENA_ACTIVATION_REQUIRED,
-                                                     userena_settings.USERENA_ACTIVATION_REQUIRED)
+                                                     userena_settings.USERENA_ACTIVATION_REQUIRED,
+                                                     first_name = first_name,
+                                                     last_name = last_name)
         return new_user
 
 class SignupFormOnlyEmail(SignupForm):
