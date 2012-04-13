@@ -78,6 +78,8 @@ class SignupForm(forms.Form):
 
     def save(self):
         """ Creates a new user and account. Returns the newly created user. """
+        import pdb
+        pdb.set_trace()
         username, email, password = (self.cleaned_data['username'],
                                      self.cleaned_data['email'],
                                      self.cleaned_data['password1'])

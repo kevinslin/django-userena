@@ -15,7 +15,9 @@ from userena import settings as userena_settings
 from guardian.shortcuts import get_perms
 from guardian.shortcuts import assign
 
-from easy_thumbnails.fields import ThumbnailerImageField
+#from easy_thumbnails.fields import ThumbnailerImageField
+from sorl.thumbnail import ImageField
+
 
 import datetime, random
 
@@ -70,7 +72,6 @@ class UserenaSignup(models.Model):
     email_confirmation_key_created = models.DateTimeField(_('creation date of email confirmation key'),
                                                           blank=True,
                                                           null=True)
-
 
     objects = UserenaManager()
 
@@ -209,10 +210,10 @@ class UserenaBaseProfile(models.Model):
                                  userena_settings.USERENA_MUGSHOT_SIZE),
                         'crop': userena_settings.USERENA_MUGSHOT_CROP_TYPE}
 
-    mugshot = ThumbnailerImageField(_('mugshot'),
+    mugshot = ImageField(           _('mugshot'),
                                     blank=True,
                                     upload_to=upload_to_mugshot,
-                                    resize_source=MUGSHOT_SETTINGS,
+                                    #resize_source=MUGSHOT_SETTINGS,
                                     help_text=_('A personal image displayed in your profile.'))
 
     privacy = models.CharField(_('privacy'),
